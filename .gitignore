@@ -3,9 +3,6 @@ venv*
 
 % datasets
 *geojson
-test.geojson
-train.geojson
-train.geojson
 
 % personal work
 perso*
