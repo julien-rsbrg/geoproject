@@ -1,4 +1,7 @@
+from sklearn.metrics import confusion_matrix
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 def get_distances(samples1, samples2):
@@ -30,3 +33,11 @@ def display_features(dic_features):
         name = dic_features["names"][i_names:i_names+feat.shape[-1]]
         i_names += feat.shape[-1]
         print(name, feat.shape)
+
+
+def plot_and_save_confusion_matrix(pred_y, true_y, dst_path):
+    cf_matrix = confusion_matrix(pred_y, true_y)
+    sns.heatmap(cf_matrix/np.sum(cf_matrix), annot=True,
+                fmt='.2%', cmap='Blues')
+    plt.savefig(dst_path)
+    plt.close()
