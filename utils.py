@@ -35,9 +35,27 @@ def display_features(dic_features):
         print(name, feat.shape)
 
 
+def display_feature_importances(dic_features, clf):
+    for i, feat_name in enumerate(dic_features["names"]):
+        print(f"{feat_name} importance:", clf.feature_importances_[i])
+
+
 def plot_and_save_confusion_matrix(pred_y, true_y, dst_path):
     cf_matrix = confusion_matrix(pred_y, true_y)
     sns.heatmap(cf_matrix/np.sum(cf_matrix), annot=True,
                 fmt='.2%', cmap='Blues')
+    plt.savefig(dst_path)
+    plt.close()
+
+
+def plot_and_save_history(history, dst_path):
+    plt.plot(history.history['loss'], label="loss")
+    plt.plot(history.history['val_loss'], label="val_loss")
+    plt.plot(history.history['sparse_categorical_accuracy'],
+             label="sparse_categorical_accuracy")
+    plt.plot(history.history['val_sparse_categorical_accuracy'],
+             label="val_sparse_categorical_accuracy")
+    plt.legend()
+    plt.show()
     plt.savefig(dst_path)
     plt.close()

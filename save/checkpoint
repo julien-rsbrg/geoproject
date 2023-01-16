@@ -1,0 +1,2 @@
+model_checkpoint_path: "weights_full_NN_model_val_0f"
+all_model_checkpoint_paths: "weights_full_NN_model_val_0f"
