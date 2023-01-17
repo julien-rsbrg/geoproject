@@ -1,7 +1,10 @@
 from sklearn.metrics import confusion_matrix
 import numpy as np
+import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+import os
 
 
 def get_distances(samples1, samples2):
@@ -59,3 +62,40 @@ def plot_and_save_history(history, dst_path):
     plt.show()
     plt.savefig(dst_path)
     plt.close()
+
+
+def save_experiment_in_excel(dst_path, clf, train_clf_f1_score, k_fold_number, val_scores, dic_features):
+    def get_dic_experiment(clf, train_clf_f1_score, k_fold_number, val_scores, dic_features):
+        dic_experiment = {
+            "training_info": {"f1_score": train_clf_f1_score},
+            "validation_info": {"k_fold_number": k_fold_number, "scores_mean": val_scores.mean(), "scores_std": val_scores.std(), "scores_max": np.max(val_scores), "scores_min": np.min(val_scores)},
+            "feature_importance_info": {f"{feat_name} importance": clf.feature_importances_[i] for i, feat_name in enumerate(dic_features["names"])}
+        }
+        return dic_experiment
+
+    dic_experiment = get_dic_experiment(
+        clf, train_clf_f1_score, k_fold_number, val_scores, dic_features)
+
+    new_df = {}
+    for main_key, sub_dic in dic_experiment.items():
+        if main_key == "training_info":
+            appendix = "train_"
+        elif main_key == "validation_info":
+            appendix = "val_"
+        else:
+            appendix = ""
+
+        for sub_key, sub_value in sub_dic.items():
+            new_df[appendix+sub_key] = sub_value
+
+    new_df = pd.DataFrame(new_df, index=[0])
+
+    if not (os.path.exists(dst_path)):
+        df = new_df
+    else:
+        df_read = pd.read_excel(dst_path)
+        df = df_read.append(new_df, ignore_index=True)
+
+    df.to_excel(dst_path, index=False)
+    print("experiment saved at "+dst_path)
+    return dic_experiment
