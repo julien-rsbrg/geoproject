@@ -43,8 +43,9 @@ optuna plz
 
 
 réduction dimension non supervisée : 
+Théodore : PCA (regarder la chute dans les eigenvalues) +
 regarder le cours sur le sujet : https://centralesupelec.edunao.com/pluginfile.php/298226/mod_resource/content/1/2EL1730-ML-Lecture09-Dimensionality_Reduction%20-%20NO.pdf
-Greedy wrapper approach 
+Greedy wrapper approach
 
 
 Tj de nouvelles features : 
